@@ -59,7 +59,7 @@ function TextHelper:write_paragraph(p, x, y, width, rel_x, color, scale, line_sp
       y = y + (self.font.height + line_spacing) * scale
     end
     line = line .. word .. " "
-    line_width = line_width + utils.round(self.font:text_width(word .. " ") * scale)
+    line_width = line_width + Utils.round(self.font:text_width(word .. " ") * scale)
   end
   if line ~= "" then
     self.font:draw_text_rel(line:sub(1, -2), x, y, rel_x, 0, color, scale)
@@ -72,7 +72,7 @@ function TextHelper:write_paragraph_justify(p, x, y, width, color, scale, line_s
   local spaces = {{}}
   local line_index = 1
   local new_x = x
-  local words = utils.split(p, ' ')
+  local words = Utils.split(p, ' ')
   for _, word in ipairs(words) do
     local w = self.font:text_width(word)
     if new_x + w * scale > x + width then

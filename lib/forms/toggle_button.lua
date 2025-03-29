@@ -2,7 +2,7 @@ ToggleButton = setmetatable({}, Button)
 ToggleButton.__index = ToggleButton
 
 function ToggleButton.new(x, y, options, action)
-  local tb_options = utils.clone(options)
+  local tb_options = Utils.clone(options)
   tb_options.cols = 2
   local self = Button.new(x, y, tb_options, action)
   setmetatable(self, ToggleButton)

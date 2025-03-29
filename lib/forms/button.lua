@@ -6,7 +6,7 @@ function Button.new(x, y, options, action)
   local img, w, h
   if options.img_path then
     local cols = options.cols or 1
-    img = Tileset.new(options.img_path, cols, 4)
+    img = Res.tileset(options.img_path, cols, 4)
     w = scale * img.tile_width
     h = scale * img.tile_height
   else
@@ -90,7 +90,7 @@ function Button:draw(color)
   if self.img then
     self.img[self.img_index]:draw(self.x, self.y, self.scale, self.scale, nil, color)
   elseif self.draw_rect then
-    local rect_color = utils.clone(color or {1, 1, 1})
+    local rect_color = Utils.clone(color or {1, 1, 1})
     if self.state == "over" then
       rect_color[1] = rect_color[1] * 0.8
       rect_color[2] = rect_color[2] * 0.8

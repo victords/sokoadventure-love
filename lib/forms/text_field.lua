@@ -25,7 +25,7 @@ function TextField.new(x, y, options, on_text_changed)
   local scale = options.scale or 1
   local img, w, h
   if options.img_path then
-    img = Tileset.new(options.img_path, 1, 2)
+    img = Res.tileset(options.img_path, 1, 2)
     w = scale * img.tile_width
     h = scale * img.tile_height
   else
@@ -37,7 +37,7 @@ function TextField.new(x, y, options, on_text_changed)
   setmetatable(self, TextField)
 
   if options.cursor_img_path then
-    self.cursor_img = Image.new(options.cursor_img_path)
+    self.cursor_img = Res.img(options.cursor_img_path)
     self.cursor_img_gap = options.cursor_img_gap or Vector.new()
   else
     self.cursor_color = options.cursor_color or {0, 0, 0}
@@ -258,7 +258,7 @@ function TextField:draw(color)
   if self.img then
     self.img[self.enabled and 1 or 2]:draw(self.x, self.y, self.scale, self.scale, nil, color)
   else
-    local rect_color = utils.clone(color or {1, 1, 1})
+    local rect_color = Utils.clone(color or {1, 1, 1})
     if not self.enabled then
       rect_color[1] = rect_color[1] * 0.6
       rect_color[2] = rect_color[2] * 0.6

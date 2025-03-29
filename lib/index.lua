@@ -1,4 +1,63 @@
-utils = {
+Res = {
+  prefix = "data/",
+  font_prefix = "font/",
+  img_prefix = "img/",
+  song_prefix = "song/",
+  sound_prefix = "sound/",
+  tileset_prefix = "img/",
+  fonts = {},
+  imgs = {},
+  songs = {},
+  sounds = {},
+  tilesets = {},
+  font = function(path, size, extension)
+    if Res.fonts[path] then return Res.fonts[path] end
+
+    extension = extension or "ttf"
+    local full_path = Res.prefix .. Res.font_prefix .. path .. "." .. extension
+    local font = Font.new(full_path, size)
+    Res.fonts[path] = font
+    return font
+  end,
+  img = function(path, extension)
+    if Res.imgs[path] then return Res.imgs[path] end
+
+    extension = extension or "png"
+    local full_path = Res.prefix .. Res.img_prefix .. path .. "." .. extension
+    local img = Image.new(full_path)
+    Res.imgs[path] = img
+    return img
+  end,
+  song = function(path, extension)
+    if Res.songs[path] then return Res.songs[path] end
+
+    extension = extension or "ogg"
+    local full_path = Res.prefix .. Res.song_prefix .. path .. "." .. extension
+    local song = Song.new(full_path)
+    Res.songs[path] = song
+    return song
+  end,
+  sound = function(path, extension)
+    if Res.sounds[path] then return Res.sounds[path] end
+
+    extension = extension or "wav"
+    local full_path = Res.prefix .. Res.sound_prefix .. path .. "." .. extension
+    local sound = Sound.new(full_path)
+    Res.sounds[path] = sound
+    return sound
+  end,
+  tileset = function(path, cols, rows, extension)
+    if Res.tilesets[path] then return Res.tilesets[path] end
+
+    extension = extension or "png"
+    local full_path = Res.prefix .. Res.tileset_prefix .. path .. "." .. extension
+    local tileset = Tileset.new(full_path, cols, rows)
+    Res.tilesets[path] = tileset
+    return tileset
+  end
+}
+
+Utils = {
   approx_equal = function (value1, value2, tolerance)
     tolerance = tolerance or 0.000001
     return math.abs(value1 - value2) <= tolerance

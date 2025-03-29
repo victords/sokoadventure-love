@@ -123,8 +123,8 @@ function Map:set_bounds()
     end
   end
 
-  self.cam.x = utils.round(self.cam.x)
-  self.cam.y = utils.round(self.cam.y)
+  self.cam.x = Utils.round(self.cam.x)
+  self.cam.y = Utils.round(self.cam.y)
   if self.isometric then
     self.min_vis_x = self:get_map_pos(0, 0).x
     self.min_vis_y = self:get_map_pos(self.cam.w - 1, 0).y
@@ -163,7 +163,7 @@ function Map:set_bounds()
 end
 
 function Map:initialize_isometric()
-  self.x_offset = utils.round(self.size.y * 0.5 * self.tile_size.x)
+  self.x_offset = Utils.round(self.size.y * 0.5 * self.tile_size.x)
   self.tile_ratio = self.tile_size.x / self.tile_size.y
   local square_size = self.tile_size.x * SQRT_2_DIV_2
   self.inverse_square_size = 1 / square_size

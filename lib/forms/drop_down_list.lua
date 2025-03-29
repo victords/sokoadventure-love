@@ -8,7 +8,7 @@ function DropDownList.new(x, y, options, on_changed)
   self.values = options.values or {'empty'}
   self.value = self.values[options.selected_index or 1]
 
-  local btn_options = utils.clone(options)
+  local btn_options = Utils.clone(options)
   btn_options.text = self.value
   btn_options.params = self
   self.buttons = {
@@ -17,9 +17,9 @@ function DropDownList.new(x, y, options, on_changed)
 
   self.w = self.buttons[1].w
   self.h = self.buttons[1].h
-  self.anchor, self.x, self.y = utils.check_anchor(self.anchor, x, y, self.w, self.h)
+  self.anchor, self.x, self.y = Utils.check_anchor(self.anchor, x, y, self.w, self.h)
 
-  local v_btn_options = utils.clone(options)
+  local v_btn_options = Utils.clone(options)
   v_btn_options.img_path = options.opt_img_path
   for i, v in ipairs(self.values) do
     v_btn_options.text = v

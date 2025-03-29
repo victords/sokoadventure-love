@@ -18,14 +18,14 @@ function Font:draw_text_rel(text, x, y, rel_x, rel_y, color, scale)
   scale = scale or 1
   local width = rel_x ~= 0 and scale * self:text_width(text)
   if rel_x == 0.5 then
-    x = utils.round(x - width / 2)
+    x = Utils.round(x - width / 2)
   elseif rel_x == 1 then
-    x = utils.round(x - width)
+    x = Utils.round(x - width)
   end
   if rel_y == 0.5 then
-    y = utils.round(y - scale * self.height / 2)
+    y = Utils.round(y - scale * self.height / 2)
   elseif rel_y == 1 then
-    y = utils.round(y - scale * self.height)
+    y = Utils.round(y - scale * self.height)
   end
   if color then love.graphics.setColor(color) end
   love.graphics.print(text, self.source, x, y, nil, scale, scale)

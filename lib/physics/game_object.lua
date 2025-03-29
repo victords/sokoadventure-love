@@ -29,7 +29,7 @@ function GameObject:draw(scale_x, scale_y, color, angle, flip, scale_img_gap)
   local scale_x_factor = flip == "horiz" and -1 or 1
   local scale_y_factor = flip == "vert" and -1 or 1
   if color then love.graphics.setColor(color) end
-  love.graphics.draw(self.img, self.quads[self.img_index], x, y, angle, scale_x_factor * scale_x, scale_y_factor * scale_y, origin_x, origin_y)
+  love.graphics.draw(self.img.source, self.quads[self.img_index], x, y, angle, scale_x_factor * scale_x, scale_y_factor * scale_y, origin_x, origin_y)
   if color then love.graphics.setColor(1, 1, 1) end
 end
 
@@ -66,7 +66,7 @@ function GameObject:move(forces, obst, ramps, set_speed)
   if math.abs(speed.y) < Physics.min_speed.y then speed.y = 0 end
   if math.abs(speed.x) > self.max_speed.x then speed.x = (speed.x < 0 and -1 or 1) * self.max_speed.x end
   if math.abs(speed.y) > self.max_speed.y then speed.y = (speed.y < 0 and -1 or 1) * self.max_speed.y end
-  self.prev_speed = utils.clone(speed)
+  self.prev_speed = Utils.clone(speed)
 
   if speed.x == 0 and speed.y == 0 then return end
 
@@ -181,7 +181,7 @@ function GameObject:move_carrying(arg, scalar_speed, carried_objs, obstacles, ra
   for _, o in ipairs(carried_objs) do
     if self.x + self.w > o.x and o.x + o.w > self.x then
       local foot = o.y + o.h
-      if utils.approx_equal(foot, self.y) or (speed.y < 0 and foot < self.y and foot > y_aim) then
+      if Utils.approx_equal(foot, self.y) or (speed.y < 0 and foot < self.y and foot > y_aim) then
         table.insert(passengers, o)
       end
     end
@@ -207,13 +207,13 @@ function GameObject:move_carrying(arg, scalar_speed, carried_objs, obstacles, ra
   end
 
   local forces = Vector.new(self.x - prev_x, self.y - prev_y)
-  local prev_g = utils.clone(Physics.gravity)
+  local prev_g = Utils.clone(Physics.gravity)
   Physics.gravity.x = 0
   Physics.gravity.y = 0
   for _, p in ipairs(passengers) do
     if getmetatable(p).move then
-      local prev_speed = utils.clone(p.speed)
-      local prev_forces = utils.clone(p.stored_forces)
+      local prev_speed = Utils.clone(p.speed)
+      local prev_forces = Utils.clone(p.stored_forces)
       local prev_bottom = p.bottom
       p.speed.x = 0
       p.speed.y = 0
@@ -309,10 +309,10 @@ function GameObject:check_contact(obst, ramps)
     local y2 = self.y + self.h
     local x2o = o.x + o.w
     local y2o = o.y + o.h
-    if not o.passable and utils.approx_equal(x2, o.x) and y2 > o.y and self.y < y2o then self.right = o end
-    if not o.passable and utils.approx_equal(self.x, x2o) and y2 > o.y and self.y < y2o then self.left = o end
-    if utils.approx_equal(y2, o.y) and x2 > o.x and self.x < x2o then self.bottom = o end
-    if not o.passable and utils.approx_equal(self.y, y2o) and x2 > o.x and self.x < x2o then self.top = o end
+    if not o.passable and Utils.approx_equal(x2, o.x) and y2 > o.y and self.y < y2o then self.right = o end
+    if not o.passable and Utils.approx_equal(self.x, x2o) and y2 > o.y and self.y < y2o then self.left = o end
+    if Utils.approx_equal(y2, o.y) and x2 > o.x and self.x < x2o then self.bottom = o end
+    if not o.passable and Utils.approx_equal(self.y, y2o) and x2 > o.x and self.x < x2o then self.top = o end
   end
   if self.bottom == nil then
     for _, r in ipairs(ramps) do

@@ -22,7 +22,7 @@ function Label:set_text(text)
   self.w = self.font:text_width(text) * self.scale
   local area_w = self.panel and self.panel.w
   local area_h = self.panel and self.panel.h
-  local _, x, y = utils.check_anchor(self.anchor, self.anchor_offset_x, self.anchor_offset_y, self.w, self.h, area_w, area_h)
+  local _, x, y = Utils.check_anchor(self.anchor, self.anchor_offset_x, self.anchor_offset_y, self.w, self.h, area_w, area_h)
   if self.panel then
     self:set_position(self.panel.x + x, self.panel.y + y)
   else

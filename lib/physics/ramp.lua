@@ -18,8 +18,8 @@ function Ramp:contact(obj)
   if self.inverted then return false end
   return obj.x + obj.w > self.x and
     obj.x < self.x + self.w and
-    utils.approx_equal(obj.x, self:get_x(obj)) and
-    utils.approx_equal(obj.y, self:get_y(obj))
+    Utils.approx_equal(obj.x, self:get_x(obj)) and
+    Utils.approx_equal(obj.y, self:get_y(obj))
 end
 
 function Ramp:intersect(obj)

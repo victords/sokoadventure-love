@@ -3,7 +3,7 @@ Component.__index = Component
 
 function Component.new(x, y, w, h, options)
   local self = setmetatable({}, Component)
-  self.anchor, self.x, self.y = utils.check_anchor(options.anchor, x, y, w, h)
+  self.anchor, self.x, self.y = Utils.check_anchor(options.anchor, x, y, w, h)
   self.anchor_offset_x = x
   self.anchor_offset_y = y
   self.w = w
