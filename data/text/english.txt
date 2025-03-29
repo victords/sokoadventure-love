@@ -1,0 +1,37 @@
+lang_name		English
+powered_by		Powered by
+game_by			A game by
+presents		Presents...
+play			Play
+instructions	Instructions
+high_scores		High Scores
+options			Options
+exit			Exit
+back			Back
+help_text		Use the arrow keys to move.\Push objects to their respective places.\You finish a level when all places are occupied.\Avoid enemies.\Objects change their appearance at each new scenery.
+from_level		From level...
+to_level		To level...
+in_tries		In ... tries
+full_screen		Full screen
+window			Window
+music_volume	Music volume
+sound_volume	Sound volume
+level			Level
+pause			Pause
+resume			Resume
+undo			Undo
+restart			Restart
+quit			Quit
+are_you_sure	Are you sure?
+yes				Yes
+no				No
+won				Level completed!
+try_again		Try again!
+congratulations	Congratulations, all levels cleared!
+end				<END>
+next_level		Next
+view_replay		Replay
+finish			Finish
+slow			Slow
+normal			Normal
+fast			Fast

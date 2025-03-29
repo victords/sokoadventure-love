@@ -1,0 +1,37 @@
+lang_name		Português
+powered_by		Feito com
+game_by			Um jogo por
+presents		Apresenta...
+play			Jogar
+instructions	Instruções
+high_scores		Recordes
+options			Opções
+exit			Sair
+back			Voltar
+help_text		Use as setas do teclado para se mover.\Empurre os objetos para suas respectivas posições.\Um nível é finalizado quando todas as posições estão ocupadas.\Evite inimigos.\Os objetos mudam de aparência a cada novo cenário.
+from_level		Do nível...
+to_level		Ao nível...
+in_tries		Em ... tentativas
+full_screen		Tela cheia
+window			Janela
+music_volume	Volume da música
+sound_volume	Volume do som
+level			Nível
+pause			Pausar
+resume			Continuar
+undo			Desfazer
+restart			Reiniciar
+quit			Sair
+are_you_sure	Tem certeza?
+yes				Sim
+no				Não
+won				Nível completo!
+try_again		Tente novamente!
+congratulations	Parabéns, jogo completo!
+end				<FIM>
+next_level		Próximo
+view_replay		Replay
+finish			Terminar
+slow			Devagar
+normal			Normal
+fast			Rápido
