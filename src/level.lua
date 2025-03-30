@@ -39,11 +39,11 @@ function MenuButton:toggle_gamepad(connected)
     self.text = Localization.text(self.text_id)
     local gp_button_img
     if self.sh_key == "confirm" then gp_button_img = "gpA"
-    elseif self.sh_key == "cancel" then gp_button_img = "gpB" then
-    elseif self.sh_key == "undo" then gp_button_img = "gpX" then
-    elseif self.sh_key == "restart" then gp_button_img = "gpY" then
-    elseif self.sh_key == "pause" then gp_button_img = "gpStart" then
-    elseif self.sh_key == "quit" then gp_button_img = "gpBack" then
+    elseif self.sh_key == "cancel" then gp_button_img = "gpB"
+    elseif self.sh_key == "undo" then gp_button_img = "gpX"
+    elseif self.sh_key == "restart" then gp_button_img = "gpY"
+    elseif self.sh_key == "pause" then gp_button_img = "gpStart"
+    elseif self.sh_key == "quit" then gp_button_img = "gpBack"
     end
     self.gp_button = Res.img(gp_button_img)
   else
@@ -75,11 +75,11 @@ function Level.new(number)
   local self = setmetatable({}, Level)
   self.number = number
 
-  local area_number = math.floor(number - 1) / 10
+  local area_number = math.floor((number - 1) / 10)
   if area_number == 0 then self.area_name = "room"
-  elseif area_number == 1 then self.area_name = "forest" then
-  elseif area_number == 2 then self.area_name = "desert" then
-  elseif area_number == 3 then self.area_name = "snow" then
+  elseif area_number == 1 then self.area_name = "forest"
+  elseif area_number == 2 then self.area_name = "desert"
+  elseif area_number == 3 then self.area_name = "snow"
   else self.area_name = "cave"
   end
 
@@ -113,8 +113,8 @@ function Level.new(number)
   self.text_helper_big = TextHelper.new(Game.big_font)
 
   self.pause_button = MenuButton.new(690, 10, "pause", "pause", "_", function(_)
-    self.paused = !self.paused
-    self.pause_button:change_text(self.paused and "resume" : "pause")
+    self.paused = not self.paused
+    self.pause_button:change_text(self.paused and "resume" or "pause")
     self.undo_button.enabled = not self.paused
   end)
   self.undo_button = MenuButton.new(690, 55, "undo", "undo", "Z", function(_)
@@ -146,7 +146,7 @@ function Level.new(number)
     MenuButton.new(405, 340, "no", "cancel", "W", function(_)
       if self.confirmation == "next_level" then
         self.replay = true
-        self.replay_step = 0
+        self.replay_step = 1
         self.replay_timer = 0
         self:start()
       else
@@ -204,12 +204,11 @@ function Level:start()
   self.margin_y = (SCREEN_HEIGHT - TILE_SIZE * self.height) / 2
   table.remove(lines, 1)
   table.remove(lines, 1)
-  table.remove(lines, 1)
 
   self.tiles = {}
   for i = 1, self.width do
     self.tiles[i] = {}
-    for j = 1, self.height do self.tiles[i][j] = {} end
+    for j = 1, self.height do self.tiles[i][j] = nil end
   end
   self.objects = {}
   for i = 1, self.width do
@@ -254,75 +253,90 @@ function Level:toggle_gamepad(connected)
   self.replay_buttons[1]:toggle_gamepad(connected)
 end
 
+function Level:move_object(obj, i1, j1, i2, j2)
+  for index, o in ipairs(self.objects[i1][j1]) do
+    if o == obj then
+      table.remove(self.objects[i1][j1], index)
+      break
+    end
+  end
+  table.insert(self.objects[i2][j2], obj)
+end
+
 function Level:player_move(i, j, i_var, j_var)
   local n_i = i + i_var
   local n_j = j + j_var
   if n_i < 1 or n_i > self.width or n_j < 1 or n_j > self.height or
-     self.tiles[n_i][n_j] == '#' or self.tiles[n_i][n_j] == 'h' then
+     self.tiles[n_i][n_j] == "#" or self.tiles[n_i][n_j] == "h" then
     return
   end
 
   local step = {}
   local objs = self.objects[n_i][n_j]
-  nn_i = n_i + i_var
-  nn_j = n_j + j_var
+  local nn_i = n_i + i_var
+  local nn_j = n_j + j_var
   local blocked = false
-  for _, obj in ipairs(objs) do
+  for index, obj in ipairs(objs) do
     if getmetatable(obj) == Ball then
-      break blocked = true if obstacle_at?(nn_i, nn_j)
-      break blocked = true if self.tiles[n_i][n_j] == 'l' or self.tiles[nn_i][nn_j] == 'h'
+      if self:obstacle_at(nn_i, nn_j) or self.tiles[n_i][n_j] == "l" or self.tiles[nn_i][nn_j] == "h" then
+        blocked = true
+        break
+      end
 
-      will_set = self.tiles[nn_i][nn_j] == 'x'
-      if will_set and !obj.set then
-        self.set_count += 1
+      local will_set = self.tiles[nn_i][nn_j] == "x"
+      if will_set and not obj.set then
+        self.set_count = self.set_count + 1
         step.set_change = 1
-      elseif !will_set and obj.set then
-        self.set_count -= 1
+      elseif not will_set and obj.set then
+        self.set_count = self.set_count - 1
         step.set_change = -1
       end
 
-      self.objects[n_i][n_j].delete(obj)
-      self.objects[nn_i][nn_j] << obj
-      obj.move(i_var * TILE_SIZE, j_var * TILE_SIZE, will_set)
+      self:move_object(obj, n_i, n_j, nn_i, nn_j)
+      obj:move(i_var * TILE_SIZE, j_var * TILE_SIZE)
+      obj.set = will_set
       step.obj_move = {
-        obj: obj,
-        from: [n_i, n_j],
-        to: [nn_i, nn_j],
-        ball: true
+        obj = obj,
+        from = {n_i, n_j},
+        to = {nn_i, nn_j},
+        ball = true
       }
       Game.play_sound("push")
     elseif getmetatable(obj) == Door then
       if self.key_count[obj.color] > 0 then
-        self.objects[n_i][n_j].delete(obj)
-        self.key_count[obj.color] -= 1
+        table.remove(self.objects[n_i][n_j], index)
+        self.key_count[obj.color] = self.key_count[obj.color] - 1
         step.obj_remove = {
-          obj: obj,
-          from: [n_i, n_j]
+          obj = obj,
+          from = {n_i, n_j}
         }
         step.key_use = obj.color
         Game.play_sound("open")
       else
-        break blocked = true
+        blocked = true
+        break
       end
     elseif getmetatable(obj) == Box then
-      break blocked = true if obstacle_at?(nn_i, nn_j, false)
-      break blocked = true if self.tiles[n_i][n_j] == 'l'
+      if self:obstacle_at(nn_i, nn_j, false) or self.tiles[n_i][n_j] == "l" then
+        blocked = true
+        break
+      end
 
-      self.objects[n_i][n_j].delete(obj)
-      if self.tiles[nn_i][nn_j] == 'h' then
-        self.tiles[nn_i][nn_j] = 'H'
+      table.remove(self.objects[n_i][n_j], index)
+      if self.tiles[nn_i][nn_j] == "h" then
+        self.tiles[nn_i][nn_j] = "H"
         step.obj_remove = {
-          obj: obj,
-          from: [n_i, n_j]
+          obj = obj,
+          from = {n_i, n_j}
         }
-        step.hole_cover = [nn_i, nn_j]
+        step.hole_cover = {nn_i, nn_j}
       else
-        self.objects[nn_i][nn_j] << obj
-        obj.move(i_var * TILE_SIZE, j_var * TILE_SIZE)
+        table.insert(self.objects[nn_i][nn_j], obj)
+        obj:move(i_var * TILE_SIZE, j_var * TILE_SIZE)
         step.obj_move = {
-          obj: obj,
-          from: [n_i, n_j],
-          to: [nn_i, nn_j]
+          obj = obj,
+          from = {n_i, n_j},
+          to = {nn_i, nn_j}
         }
       end
       Game.play_sound("push")
@@ -330,144 +344,153 @@ function Level:player_move(i, j, i_var, j_var)
   end
   if blocked then return end
 
-  if /r|b|y|g/ =~ self.tiles[n_i][n_j] then
-    color = self.tiles[n_i][n_j].to_sym
-    self.key_count[color] += 1
-    self.tiles[n_i][n_j] = '.'
+  if self.tiles[n_i][n_j]:find("[rbyg]") then
+    color = self.tiles[n_i][n_j]
+    self.key_count[color] = self.key_count[color] + 1
+    self.tiles[n_i][n_j] = "."
     step.key_add = {
-      color: color,
-      from: [n_i, n_j]
+      color = color,
+      from = {n_i, n_j}
     }
   end
 
-  self.man.move(i_var * TILE_SIZE, j_var * TILE_SIZE)
-  step.player = [i, j, i_var, j_var, self.man.dir]
-  step.enemies = self.enemies.map { |e| [e.x, e.y, e.dir, e.timer] }
-  self.history << step unless self.replay
+  self.man:move(i_var * TILE_SIZE, j_var * TILE_SIZE)
+  step.player = {i, j, i_var, j_var, self.man.dir}
+  step.enemies = {}
+  for _, e in ipairs(self.enemies) do
+    table.insert(step.enemies, {e.x, e.y, e.dir, e.timer})
+  end
+  if not self.replay then
+    table.insert(self.history, step)
+  end
 end
 
 function Level:enemy_move(enemy)
-  tries = 0
-  i = (enemy.x - self.margin_x) / TILE_SIZE
-  j = (enemy.y - self.margin_y) / TILE_SIZE
-  while tries < 4
-    i_var, j_var =
-      case enemy.dir
-      when 0 then [0, -1]
-      when 1 then [1, 0]
-      when 2 then [0, 1]
-      else        [-1, 0]
-      end
-    if obstacle_at?(i + i_var, j + j_var) then
-      tries += 1
+  local tries = 0
+  local i = math.floor((enemy.x - self.margin_x) / TILE_SIZE) + 1
+  local j = math.floor((enemy.y - self.margin_y) / TILE_SIZE) + 1
+  while tries < 4 do
+    local i_var, j_var
+    if enemy.dir == 0 then i_var, j_var = 0, -1
+    elseif enemy.dir == 1 then i_var, j_var = 1, 0
+    elseif enemy.dir == 2 then i_var, j_var = 0, 1
+    else i_var, j_var = -1, 0
+    end
+    if self:obstacle_at(i + i_var, j + j_var) then
+      tries = tries + 1
       enemy.dir = (enemy.dir + tries) % 4
     else
-      self.objects[i][j].delete(enemy)
-      self.objects[i + i_var][j + j_var] << enemy
-      enemy.move(i_var * TILE_SIZE, j_var * TILE_SIZE)
+      self:move_object(enemy, i, j, i + i_var, j + j_var)
+      enemy:move(i_var * TILE_SIZE, j_var * TILE_SIZE)
       break
     end
   end
 end
 
 function Level:check_man(enemy)
-  i = (enemy.x - self.margin_x) / TILE_SIZE
-  j = (enemy.y - self.margin_y) / TILE_SIZE
-  m_i = (self.man.x - self.margin_x) / TILE_SIZE
-  m_j = (self.man.y - self.margin_y) / TILE_SIZE
+  local i = math.floor((enemy.x - self.margin_x) / TILE_SIZE) + 1
+  local j = math.floor((enemy.y - self.margin_y) / TILE_SIZE) + 1
+  local m_i = math.floor((self.man.x - self.margin_x) / TILE_SIZE) + 1
+  local m_j = math.floor((self.man.y - self.margin_y) / TILE_SIZE) + 1
   if i == m_i and j == m_j then
-    self.effect = TextEffect.new("try_again", 0xff6666)
+    self.effect = TextEffect.new("try_again", {1, 0.4, 0.4})
   end
 end
 
-function Level:obstacle_at?(i, j, check_hole = true)
-  return true if i < 0 or i >= self.width or j < 0 or j >= self.height
-  return true if self.tiles[i][j] == '#'
-  return true if check_hole and self.tiles[i][j] == 'h'
-
-  objs = self.objects[i][j]
-  objs.any? do |obj|
-    obj.is_a?(Ball) or obj.is_a?(Box) or obj.is_a?(Door)
+function Level:obstacle_at(i, j, check_hole)
+  check_hole = check_hole or check_hole == nil
+  if i < 1 or i > self.width or j < 1 or j > self.height or
+     self.tiles[i][j] == "#" or
+     check_hole and self.tiles[i][j] == "h" then
+    return true
   end
+
+  for _, obj in ipairs(self.objects[i][j]) do
+    local metatable = getmetatable(obj)
+    if metatable == Ball or metatable == Box or metatable == Door then
+      return true
+    end
+  end
+  return false
 end
 
 function Level:reposition_enemies(step)
-  self.enemies.each_with_index do |e, ind|
-    i = (e.x - self.margin_x) / TILE_SIZE
-    j = (e.y - self.margin_y) / TILE_SIZE
-    self.objects[i][j].delete(e)
-    e.x = step.enemies[ind][0]
-    e.y = step.enemies[ind][1]
-    i = (e.x - self.margin_x) / TILE_SIZE
-    j = (e.y - self.margin_y) / TILE_SIZE
-    self.objects[i][j] << e
+  for e, ind in ipairs(self.enemies) do
+    local i = math.floor((e.x - self.margin_x) / TILE_SIZE) + 1
+    local j = math.floor((e.y - self.margin_y) / TILE_SIZE) + 1
+    e.x = step.enemies[ind][1]
+    e.y = step.enemies[ind][2]
+    local n_i = math.floor((e.x - self.margin_x) / TILE_SIZE) + 1
+    local n_j = math.floor((e.y - self.margin_y) / TILE_SIZE) + 1
+    self:move_object(e, i, j, n_i, n_j)
 
-    e.dir = step.enemies[ind][2]
-    e.timer = step.enemies[ind][3]
+    e.dir = step.enemies[ind][3]
+    e.timer = step.enemies[ind][4]
   end
 end
 
-function Level:undo
-  return if self.history.empty?
+function Level:undo()
+  if #self.history == 0 then return end
 
-  step = self.history.pop
+  local step = table.remove(self.history)
 
-  self.set_count -= step.set_change if step.set_change
+  if step.set_change then
+    self.set_count = self.set_count - step.set_change
+  end
 
   if step.obj_move then
-    obj = step.obj_move.obj
-    from = [step.obj_move.from[0], step.obj_move.from[1]]
-    to = [step.obj_move.to[0], step.obj_move.to[1]]
-    self.objects[to[0]][to[1]].delete(obj)
-    self.objects[from[0]][from[1]] << obj
+    local obj = step.obj_move.obj
+    local from = {step.obj_move.from[1], step.obj_move.from[2]}
+    local to = {step.obj_move.to[1], step.obj_move.to[2]}
+    self:move_object(obj, to[1], to[2], from[1], from[2])
+    obj:move((from[1] - to[1]) * TILE_SIZE, (from[2] - to[2]) * TILE_SIZE)
     if step.obj_move.ball then
-      obj.move((from[0] - to[0]) * TILE_SIZE, (from[1] - to[1]) * TILE_SIZE, self.tiles[from[0]][from[1]] == 'x')
-    else
-      obj.move((from[0] - to[0]) * TILE_SIZE, (from[1] - to[1]) * TILE_SIZE)
+      obj.set = self.tiles[from[1]][from[2]] == "x"
     end
   end
 
   if step.obj_remove then
-    obj = step.obj_remove.obj
-    self.objects[step.obj_remove.from[0]][step.obj_remove.from[1]] << obj
+    table.insert(self.objects[step.obj_remove.from[1]][step.obj_remove.from[2]], step.obj_remove.obj)
   end
 
-  self.key_count[step.key_use] += 1 if step.key_use
+  if step.key_use then
+    self.key_count[step.key_use] = self.key_count[step.key_use] + 1
+  end
 
   if step.hole_cover then
-    self.tiles[step.hole_cover[0]][step.hole_cover[1]] = 'h'
+    self.tiles[step.hole_cover[1]][step.hole_cover[2]] = "h"
   end
 
   if step.key_add then
-    self.key_count[step.key_add.color] -= 1
-    self.tiles[step.key_add.from[0]][step.key_add.from[1]] = step.key_add.color.to_s
+    self.key_count[step.key_add.color] = self.key_count[step.key_add.color] - 1
+    self.tiles[step.key_add.from[1]][step.key_add.from[2]] = step.key_add.color
   end
 
-  reposition_enemies(step)
+  self:reposition_enemies(step)
 
-  self.man.x = self.margin_x + step.player[0] * TILE_SIZE
-  self.man.y = self.margin_y + step.player[1] * TILE_SIZE
-  self.man.set_dir(step.player[4])
+  self.man.x = self.margin_x + (step.player[1] - 1) * TILE_SIZE
+  self.man.y = self.margin_y + (step.player[2] - 1) * TILE_SIZE
+  self.man:set_dir(step.player[5])
 end
 
-function Level:redo
-  step = self.history[self.replay_step]
-  i_var = step.player[2]
-  j_var = step.player[3]
-  player_move(step.player[0], step.player[1], i_var, j_var)
+function Level:redo()
+  local step = self.history[self.replay_step]
+  local i_var = step.player[3]
+  local j_var = step.player[4]
+  self:player_move(step.player[1], step.player[2], i_var, j_var)
   if j_var < 0 then
-    self.man.set_dir(0)
+    self.man:set_dir(0)
   elseif i_var > 0 then
-    self.man.set_dir(1)
+    self.man:set_dir(1)
   elseif j_var > 0 then
-    self.man.set_dir(2)
+    self.man:set_dir(2)
   else
-    self.man.set_dir(3)
+    self.man:set_dir(3)
   end
-  reposition_enemies(step)
+  self:reposition_enemies(step)
 end
 
-function Level:reduce_replay_speed
+function Level:reduce_replay_speed()
   if self.replay_interval < 15 then
     self.replay_interval = 15
   elseif self.replay_interval < 30 then
@@ -475,7 +498,7 @@ function Level:reduce_replay_speed
   end
 end
 
-function Level:increase_replay_speed
+function Level:increase_replay_speed()
   if self.replay_interval > 15 then
     self.replay_interval = 15
   elseif self.replay_interval > 7 then
@@ -483,187 +506,188 @@ function Level:increase_replay_speed
   end
 end
 
-function Level:congratulate
-  self.effect = TextEffect.new("congratulations", 0xcccc00)
+function Level:congratulate()
+  self.effect = TextEffect.new("congratulations", {0.75, 0.75, 1})
   self.effect_timer = -150
 end
 
-function Level:update
+function Level:update()
   if self.confirmation then
-    self.confirm_buttons.each(&"update")
+    for _, b in ipairs(self.confirm_buttons) do b:update() end
   elseif self.effect then
-    self.effect.update
-    self.effect_timer += 1
+    self.effect:update()
+    self.effect_timer = self.effect_timer + 1
     if self.effect_timer == EFFECT_DURATION then
-      case self.effect.type
-      when "won"
+      if self.effect.type == "won" then
         if self.number < LEVEL_COUNT or self.replay then
           self.confirmation = "next_level"
-          self.confirm_buttons[0].change_text("next_level")
-          self.confirm_buttons[1].change_text("view_replay")
+          self.confirm_buttons[1]:change_text("next_level")
+          self.confirm_buttons[2]:change_text("view_replay")
         else
-          congratulate
+          self:congratulate()
         end
-      when "try_again"
-        Game.register_attempt
-        start
-      when "congratulations"
+      elseif self.effect.type ==  "try_again" then
+        Game.register_attempt()
+        self:start()
+      elseif self.effect.type == "congratulations" then
         self.confirmation = "next_level"
-        self.confirm_buttons[0].change_text("next_level")
-        self.confirm_buttons[1].change_text("view_replay")
+        self.confirm_buttons[1]:change_text("next_level")
+        self.confirm_buttons[2]:change_text("view_replay")
       end
     end
   elseif self.replay then
-    self.replay_buttons.each(&"update")
+    for _, b in ipairs(self.replay_buttons) do b:update() end
   else
-    self.buttons.each(&"update")
+    for _, b in ipairs(self.buttons) do b:update() end
   end
-  return if self.confirmation or self.effect or self.paused
+  if self.confirmation or self.effect or self.paused then return end
 
-  prev_count = self.set_count
+  local prev_count = self.set_count
 
   if self.replay then
-    self.replay_timer += 1
+    self.replay_timer = self.replay_timer + 1
     if self.replay_timer >= self.replay_interval then
-      self.redo
-      self.replay_step += 1
+      self:redo()
+      self.replay_step = self.replay_step + 1
       self.replay_timer = 0
     end
 
-    if Game.key_press?("left") then
-      reduce_replay_speed
-    elseif Game.key_press?("right") then
-      increase_replay_speed
+    if Game.key_press("left") then
+      self:reduce_replay_speed()
+    elseif Game.key_press("right") then
+      self:increase_replay_speed()
     end
   else
-    i = (self.man.x - self.margin_x) / TILE_SIZE
-    j = (self.man.y - self.margin_y) / TILE_SIZE
-    if Game.key_press?("up", true) then
-      player_move(i, j, 0, -1)
-      self.man.set_dir(0)
-    elseif Game.key_press?("right", true) then
-      player_move(i, j, 1, 0)
-      self.man.set_dir(1)
-    elseif Game.key_press?("down", true) then
-      player_move(i, j, 0, 1)
-      self.man.set_dir(2)
-    elseif Game.key_press?("left", true) then
-      player_move(i, j, -1, 0)
-      self.man.set_dir(3)
+    local i = math.floor((self.man.x - self.margin_x) / TILE_SIZE) + 1
+    local j = math.floor((self.man.y - self.margin_y) / TILE_SIZE) + 1
+    if Game.key_press("up", true) then
+      self:player_move(i, j, 0, -1)
+      self.man:set_dir(0)
+    elseif Game.key_press("right", true) then
+      self:player_move(i, j, 1, 0)
+      self.man:set_dir(1)
+    elseif Game.key_press("down", true) then
+      self:player_move(i, j, 0, 1)
+      self.man:set_dir(2)
+    elseif Game.key_press("left", true) then
+      self:player_move(i, j, -1, 0)
+      self.man:set_dir(3)
     end
   end
 
-  self.objects.flatten.each do |obj|
-    obj.update(self) if obj.respond_to?("update")
+  for _, col in ipairs(self.objects) do
+    for _, cell in ipairs(col) do
+      for _, obj in ipairs(cell) do
+        if obj.update then obj:update(self) end
+      end
+    end
   end
-  self.man.update
+  self.man:update()
 
-  if !self.effect and prev_count < self.aim_count and self.set_count == self.aim_count then
-    self.effect = TextEffect.new("won", 0xffffff)
+  if not self.effect and prev_count < self.aim_count and self.set_count == self.aim_count then
+    self.effect = TextEffect.new("won", {1, 1, 1})
     Game.play_sound("clear")
   end
 end
 
 function Level:get_hole(i, j)
-  up = j > 0 and /h/i =~ self.tiles[i][j - 1]
-  rt = i < self.width - 1 and /h/i =~ self.tiles[i + 1][j]
-  dn = j < self.height - 1 and /h/i =~ self.tiles[i][j + 1]
-  lf = i > 0 and /h/i =~ self.tiles[i - 1][j]
-  return 10 if up and rt and dn and lf
-  return 2 if up and rt and dn
-  return 6 if up and rt and lf
-  return 7 if up and dn and lf
-  return 3 if rt and dn and lf
-  return 4 if up and rt
-  return 14 if up and dn
-  return 5 if up and lf
-  return 0 if rt and dn
-  return 11 if rt and lf
-  return 1 if dn and lf
-  return 13 if up
-  return 12 if rt
-  return 8 if dn
-  return 9 if lf
-  15
+  local up = j > 1 and (self.tiles[i][j - 1] == "h" or self.tiles[i][j - 1] == "H")
+  local rt = i < self.width and (self.tiles[i + 1][j] == "h" or self.tiles[i + 1][j] == "H")
+  local dn = j < self.height and (self.tiles[i][j + 1] == "h" or self.tiles[i][j + 1] == "H")
+  local lf = i > 1 and (self.tiles[i - 1][j] == "h" or self.tiles[i - 1][j] == "H")
+  if up and rt and dn and lf then return 11 end
+  if up and rt and dn then return 3 end
+  if up and rt and lf then return 7 end
+  if up and dn and lf then return 8 end
+  if rt and dn and lf then return 4 end
+  if up and rt then return 5 end
+  if up and dn then return 15 end
+  if up and lf then return 6 end
+  if rt and dn then return 1 end
+  if rt and lf then return 12 end
+  if dn and lf then return 2 end
+  if up then return 14 end
+  if rt then return 13 end
+  if dn then return 9 end
+  if lf then return 10 end
+  return 16
 end
 
-function Level:draw
-  (0..3).each do |i|
-    (0..2).each do |j|
-      self.bg.draw(i * 200, j * 200, 0)
+function Level:draw()
+  for i = 0, 3 do
+    for j = 0, 2 do
+      self.bg:draw(i * 200, j * 200)
     end
   end
 
-  self.borders[0].draw(self.margin_x - 12, self.margin_y - 12, 0)
-  self.borders[2].draw(SCREEN_WIDTH - self.margin_x, self.margin_y - 12, 0)
-  self.borders[5].draw(self.margin_x - 12, SCREEN_HEIGHT - self.margin_y, 0)
-  self.borders[7].draw(SCREEN_WIDTH - self.margin_x, SCREEN_HEIGHT - self.margin_y, 0)
-  (0...self.width).each do |i|
-    x = self.margin_x + i * TILE_SIZE
-    self.borders[1].draw(x, self.margin_y - 12, 0)
-    self.borders[6].draw(x, SCREEN_HEIGHT - self.margin_y, 0)
-    (0...self.height).each do |j|
-      y = self.margin_y + j * TILE_SIZE
+  self.borders[1]:draw(self.margin_x - 12, self.margin_y - 12)
+  self.borders[3]:draw(SCREEN_WIDTH - self.margin_x, self.margin_y - 12)
+  self.borders[6]:draw(self.margin_x - 12, SCREEN_HEIGHT - self.margin_y)
+  self.borders[8]:draw(SCREEN_WIDTH - self.margin_x, SCREEN_HEIGHT - self.margin_y)
+  for i = 1, self.width do
+    local x = self.margin_x + (i - 1) * TILE_SIZE
+    self.borders[2]:draw(x, self.margin_y - 12)
+    self.borders[7]:draw(x, SCREEN_HEIGHT - self.margin_y)
+    for j = 1, self.height do
+      local y = self.margin_y + (j - 1) * TILE_SIZE
 
-      if i == 0 then
-        self.borders[3].draw(self.margin_x - 12, y, 0)
-        self.borders[4].draw(SCREEN_WIDTH - self.margin_x, y, 0)
+      if i == 1 then
+        self.borders[4]:draw(self.margin_x - 12, y)
+        self.borders[5]:draw(SCREEN_WIDTH - self.margin_x, y)
       end
 
-      self.tile_floor.draw(x, y, 0)
-      tile = self.tiles[i][j]
-      overlay =
-        case tile
-        when '#' then self.tile_wall
-        when 'x' then self.tile_aim
-        when /r|b|y|g/ then self.key_imgs[tile.to_sym]
-        when /h/i then self.holes[get_hole(i, j)]
-        when 'l' then self.lock
-        end
-      overlay&.draw(x, y, 0)
-      self.set_box.draw(x, y, 0) if tile == 'H'
+      self.tile_floor:draw(x, y)
+      local tile = self.tiles[i][j]
+      local overlay
+      if tile == '#' then overlay = self.tile_wall
+      elseif tile == 'x' then overlay = self.tile_aim
+      elseif tile and tile:find("[rbyg]") then overlay = self.key_imgs[tile]
+      elseif tile == "h" or tile == "H" then overlay = self.holes[self:get_hole(i, j)]
+      elseif tile == "l" then overlay = self.lock
+      end
+      if overlay then overlay:draw(x, y) end
+      if tile == "H" then self.set_box:draw(x, y) end
     end
   end
 
-  self.objects.flatten.each(&"draw")
-  self.man.draw
+  for _, col in ipairs(self.objects) do
+    for _, cell in ipairs(col) do
+      for _, obj in ipairs(cell) do obj:draw() end
+    end
+  end
+  self.man:draw()
 
-  self.text_helper_big.write_line("#{Localization.text("level")} #{self.number}", 10, 10, "left", 0xffffff, 255, "shadow")
-  self.key_imgs.r.draw(10, 50, 0, 0.5, 0.5)
-  self.text_helper.write_line(self.key_count.r, 36, 50, "left", 0xff0000, 255, "shadow")
-  self.key_imgs.b.draw(10, 70, 0, 0.5, 0.5)
-  self.text_helper.write_line(self.key_count.b, 36, 70, "left", 0x0000ff, 255, "shadow")
-  self.key_imgs.y.draw(10, 90, 0, 0.5, 0.5)
-  self.text_helper.write_line(self.key_count.y, 36, 90, "left", 0xcccc00, 255, "shadow")
-  self.key_imgs.g.draw(10, 110, 0, 0.5, 0.5)
-  self.text_helper.write_line(self.key_count.g, 36, 110, "left", 0x008000, 255, "shadow")
+  self.text_helper_big:write_line(Localization.text("level") .. " " .. self.number, 10, 10, "left", {1, 1, 1}, "shadow")
+  self.key_imgs.r:draw(10, 50, 0.5, 0.5)
+  self.text_helper:write_line(self.key_count.r, 36, 50, "left", {1, 0, 0}, "shadow")
+  self.key_imgs.b:draw(10, 70, 0.5, 0.5)
+  self.text_helper:write_line(self.key_count.b, 36, 70, "left", {0, 0, 1}, "shadow")
+  self.key_imgs.y:draw(10, 90, 0.5, 0.5)
+  self.text_helper:write_line(self.key_count.y, 36, 90, "left", {0.75, 0.75, 0}, "shadow")
+  self.key_imgs.g:draw(10, 110, 0.5, 0.5)
+  self.text_helper:write_line(self.key_count.g, 36, 110, "left", {0, 0.5, 0}, "shadow")
 
   if self.replay then
-    self.replay_buttons.each(&"draw")
-    text = if self.replay_interval == 7
-             "fast"
-           else
-             self.replay_interval == 15 ? "normal" : "slow"
-           end
-    self.text_helper.write_line(Localization.text(text), 740, 65, "center")
+    for _, b in ipairs(self.replay_buttons) do b:draw() end
+    local text = self.replay_interval == 7 and "fast" or (self.replay_interval == 15 and "normal" or "slow")
+    self.text_helper:write_line(Localization.text(text), 740, 65, "center", {0, 0, 0})
   else
-    self.buttons.each(&"draw")
+    for _, b in ipairs(self.buttons) do b:draw() end
   end
 
   if self.confirmation then
-    G.window.draw_quad(0, 0, 0x80000000,
-                       SCREEN_WIDTH, 0, 0x80000000,
-                       0, SCREEN_HEIGHT, 0x80000000,
-                       SCREEN_WIDTH, SCREEN_HEIGHT, 0x80000000, 100)
-    self.panel.draw((SCREEN_WIDTH - self.panel.width) / 2, (SCREEN_HEIGHT - self.panel.height) / 2, 100)
+    love.graphics.setColor(0, 0, 0, 0.5)
+    love.graphics.rectangle("fill", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+    love.graphics.setColor(1, 1, 1)
+    self.panel:draw((SCREEN_WIDTH - self.panel.width) / 2, (SCREEN_HEIGHT - self.panel.height) / 2)
     if self.confirmation == "next_level" then
-      self.text_helper_big.write_line(Localization.text("won"), 400, 240, "center", 0, 255, nil, 0, 0, 0, 100)
+      self.text_helper_big:write_line(Localization.text("won"), 400, 240, "center", {0, 0, 0})
     else
-      self.text_helper_big.write_line(Localization.text(self.confirmation), 400, 210, "center", 0, 255, nil, 0, 0, 0, 100)
-      self.text_helper.write_line(Localization.text("are_you_sure"), 400, 275, "center", 0, 255, nil, 0, 0, 0, 100)
+      self.text_helper_big:write_line(Localization.text(self.confirmation), 400, 210, "center", {0, 0, 0})
+      self.text_helper:write_line(Localization.text("are_you_sure"), 400, 275, "center", {0, 0, 0})
     end
-    self.confirm_buttons.each { |b| b.draw(255, 100) }
+    for _, b in ipairs(self.confirm_buttons) do b:draw() end
   elseif self.effect then
-    self.effect.draw
+    self.effect:draw()
   end
 end

@@ -42,11 +42,10 @@ function Game.load()
 
   Game.font = Res.font("font", 20)
   Game.big_font = Res.font("font", 32)
-  print(Game.font.height, Game.big_font.height)
   Game.controller = Presentation.new()
 
   Localization.init(LANGUAGES[Game.language])
-  KB.held_delay = 5
+  KB.held_delay = 10
   love.window.setFullscreen(Game.full_screen)
 end
 
@@ -113,10 +112,10 @@ function Game.save_scores()
   local contents = ""
   for i, entry in ipairs(Game.scores) do
     for j, score in ipairs(entry) do
-      contents = content .. score
-      if j < #entry then content = content .. ";" end
+      contents = contents .. score
+      if j < #entry then contents = contents .. ";" end
     end
-    if i < #Game.scores then content = content .. "|" end
+    if i < #Game.scores then contents = contents .. "|" end
   end
   love.filesystem.write(SCORES_PATH, contents)
 end

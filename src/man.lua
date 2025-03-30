@@ -7,6 +7,7 @@ function Man.new(x, y)
   self.img_index = 4
   self.indices = {4, 5, 6, 5}
   self.dir = 2
+  return self
 end
 
 function Man:set_dir(dir)

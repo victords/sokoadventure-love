@@ -8,6 +8,7 @@ function Sound.new(path)
 end
 
 function Sound:play(volume, looping)
+  if self:playing() then self:stop() end
   self.source:setVolume(volume or 1)
   self.source:setLooping(looping or false)
   self.source:play()
