@@ -2,6 +2,7 @@ require("lib.index")
 require("src.constants")
 require("src.presentation")
 require("src.menu")
+require("src.level")
 
 local CONFIG_PATH = "config.soko"
 local SCORES_PATH = "scores.soko"
