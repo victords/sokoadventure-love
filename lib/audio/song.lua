@@ -26,3 +26,7 @@ end
 function Song:playing()
   return self.source:isPlaying()
 end
+
+function Song:set_volume(volume)
+  self.source:setVolume(volume)
+end

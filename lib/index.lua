@@ -11,12 +11,13 @@ Res = {
   sounds = {},
   tilesets = {},
   font = function(path, size, extension)
-    if Res.fonts[path] then return Res.fonts[path] end
+    local key = path .. "_" .. size
+    if Res.fonts[key] then return Res.fonts[key] end
 
     extension = extension or "ttf"
     local full_path = Res.prefix .. Res.font_prefix .. path .. "." .. extension
     local font = Font.new(full_path, size)
-    Res.fonts[path] = font
+    Res.fonts[key] = font
     return font
   end,
   img = function(path, extension)
