@@ -44,14 +44,17 @@ function Game.load()
   Game.controller = Presentation.new()
 
   Localization.init(LANGUAGES[Game.language])
+  KB.held_delay = 5
 end
 
 function Game.play_song(id)
-  Res.song(id):play(Game.music_volume * 0.1)
+  local song = Res.song(id)
+  if Song.current == song then return end
+  song:play(Game.music_volume * 0.1)
 end
 
 function Game.play_sound(id)
-  Res.sound(id).play(Game.sound_volume * 0.1)
+  Res.sound(id):play(Game.sound_volume * 0.1)
 end
 
 function Game.key_press(id, held)

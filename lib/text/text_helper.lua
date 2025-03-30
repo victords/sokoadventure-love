@@ -52,7 +52,6 @@ function TextHelper:write_paragraph(p, x, y, width, rel_x, color, scale, line_sp
   for word in p:gmatch("[^ ]+") do
     local w = self.font:text_width(word)
     if line_width + w * scale > width then
-      print(line)
       self.font:draw_text_rel(line:sub(1, -2), x, y, rel_x, 0, color, scale)
       line = ""
       line_width = 0
