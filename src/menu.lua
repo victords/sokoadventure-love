@@ -138,7 +138,7 @@ end
 
 function Menu:update()
   if Game.key_press("confirm") or KB.pressed("return") then
-    self.btns[self.state][btn_index]:click()
+    self.btns[self.state][self.btn_index]:click()
   elseif self.state ~= "main" and (Game.key_press("cancel") or Game.key_press("quit")) then
     self:set_state("main")
   elseif Game.key_press("up", true) then
@@ -161,7 +161,7 @@ function Menu:draw()
   end
 
   if self.state == "instructions" then
-    self.text_helper:write_breaking(Localization.text("help_text"), 255, 285, 290)
+    self.text_helper:write_breaking(Localization.text("help_text"), 255, 285, 290, "left", {0, 0, 0})
   elseif self.state == "high_scores" then
     Game.font:draw_text(Localization.text("from_level"), 260, 230, {0, 0, 0})
     Game.font:draw_text(Localization.text("to_level"), 360, 230, {0, 0, 0})

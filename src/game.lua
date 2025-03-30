@@ -13,9 +13,9 @@ function Game.load()
   Game.scores = {}
   if love.filesystem.getInfo(SCORES_PATH) then
     local contents = love.filesystem.read(SCORES_PATH)
-    for entry_str in contents:gmatch("[^|]") do
+    for entry_str in contents:gmatch("[^|]+") do
       local entry = {}
-      for score in entry:gmatch("[^;]") do
+      for score in entry_str:gmatch("[^;]+") do
         table.insert(entry, tonumber(score))
       end
       table.insert(Game.scores, entry)
@@ -41,10 +41,12 @@ function Game.load()
 
   Game.font = Res.font("font", 20)
   Game.big_font = Res.font("font", 32)
+  print(Game.font.height, Game.big_font.height)
   Game.controller = Presentation.new()
 
   Localization.init(LANGUAGES[Game.language])
   KB.held_delay = 5
+  love.window.setFullscreen(Game.full_screen)
 end
 
 function Game.play_song(id)

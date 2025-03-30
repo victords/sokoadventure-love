@@ -1,9 +1,11 @@
 Font = {}
 Font.__index = Font
 
+local SIZE_TO_PIXEL_RATIO = 1.33
+
 function Font.new(path, size)
   local self = setmetatable({}, Font)
-  self.source = love.graphics.newFont(path, size)
+  self.source = love.graphics.newFont(path, size / SIZE_TO_PIXEL_RATIO)
   self.height = self.source:getHeight()
   return self
 end
