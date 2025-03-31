@@ -11,3 +11,13 @@ end
 function love.draw()
   Game.draw()
 end
+
+function love.joystickadded()
+  Game.toggle_gamepad(true)
+end
+
+function love.joystickremoved()
+  if love.joystick.getJoystickCount() == 0 then
+    Game.toggle_gamepad(false)
+  end
+end

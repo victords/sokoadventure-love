@@ -64,7 +64,7 @@ end
 function MenuButton:draw()
   Button.draw(self)
   if self.gp_button then
-    self.gp_button:draw(self.text_x + Game.font.text_width(self.text) / 2 + 10, self.text_y - 10)
+    self.gp_button:draw(self.text_x + Game.font:text_width(self.text) / 2 + 10, self.text_y - 10)
   end
 end
 
