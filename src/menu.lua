@@ -22,6 +22,10 @@ function MainButton:draw(color)
   self.icon:draw(self.x, self.y)
 end
 
+function MainButton:draw_highlight()
+  self.highlight:draw(self.x, self.y)
+end
+
 LevelButton = setmetatable({}, Button)
 LevelButton.__index = LevelButton
 
@@ -35,6 +39,10 @@ function LevelButton.new(x, y, number)
   return self
 end
 
+function LevelButton:draw_highlight()
+  self.highlight:draw(self.x, self.y)
+end
+
 OptionButton = setmetatable({}, Button)
 OptionButton.__index = OptionButton
 
@@ -46,6 +54,10 @@ function OptionButton.new(x, y, img, action)
   setmetatable(self, OptionButton)
   self.highlight = Res.img(img .. "Highlight")
   return self
+end
+
+function OptionButton:draw_highlight()
+  self.highlight:draw(self.x - 4, self.y - 4)
 end
 
 Menu = {}
@@ -185,7 +197,7 @@ function Menu:draw()
   for i, b in ipairs(self.btns[self.state]) do
     b:draw()
     if i == self.btn_index then
-      b.highlight:draw(b.x - 2, b.y - 2)
+      b:draw_highlight()
     end
   end
 end

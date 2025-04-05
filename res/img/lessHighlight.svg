@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="48"
+   height="68"
+   viewBox="0 0 12.7 17.991668"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="lessHighlight.svg"
+   inkscape:export-filename="/home/victor/Projects/sokoadventure-love/data/img/lessHighlight.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.5730837"
+     inkscape:cx="32.567248"
+     inkscape:cy="45.935072"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:pagecheckerboard="true"
+     inkscape:showpageshadow="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1012"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-263.13332)">
+    <path
+       id="path19641"
+       style="color:#000000;fill:#ffff00;stroke-width:3.77952;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;stroke:none;fill-opacity:1;opacity:0.8"
+       d="M 43.039062 0 C 42.431657 -0.0042933254 41.807988 0.10385673 41.193359 0.34179688 C 12.776738 11.361047 0.70117188 31.44535 0.70117188 31.445312 C -0.25017728 33.045942 -0.23248452 35.042802 0.74609375 36.626953 C 13.490602 57.234713 41.148438 67.640625 41.148438 67.640625 C 44.431214 68.947548 47.998224 66.530771 48 62.998047 L 48 5.0058594 C 48.001259 2.1503225 45.671153 0.01860441 43.039062 0 z M 43.005859 3.9960938 C 43.535175 3.9985047 44.005638 4.428948 44.001953 5.0039062 L 44.001953 63.001953 C 43.998264 63.70812 43.283982 64.189214 42.628906 63.925781 C 42.62891 63.925781 15.781965 53.341553 4.1464844 34.523438 C 3.9523678 34.207053 3.9492042 33.809604 4.1386719 33.490234 C 4.1386719 33.490234 15.36168 14.644321 42.634766 4.0664062 C 42.758272 4.0179055 42.88371 3.9955374 43.005859 3.9960938 z "
+       transform="matrix(0.26458334,0,0,0.26458334,0,263.13332)" />
+  </g>
+</svg>
