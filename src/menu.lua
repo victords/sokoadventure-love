@@ -19,7 +19,7 @@ end
 
 function MainButton:draw(color)
   Button.draw(self, color)
-  self.icon:draw(self.x - 5, self.y - 5)
+  self.icon:draw(self.x, self.y)
 end
 
 LevelButton = setmetatable({}, Button)
