@@ -99,14 +99,14 @@ function Level.new(number)
 
   local img = love.graphics.newImage("data/img/" .. self.area_name .. "/border.png")
   self.borders = {
-    Image.new(img, 0, 0, 12, 12),   -- top left
-    Image.new(img, 12, 0, 32, 12),  -- top
-    Image.new(img, 44, 0, 12, 12),  -- top right
-    Image.new(img, 0, 12, 12, 32),  -- left
-    Image.new(img, 44, 12, 12, 32), -- right
-    Image.new(img, 0, 44, 12, 12),  -- bottom left
-    Image.new(img, 12, 44, 32, 12), -- bottom
-    Image.new(img, 44, 44, 12, 12), -- bottom right
+    Image.new(img, 0, 0, 20, 20),   -- top left
+    Image.new(img, 20, 0, 50, 20),  -- top
+    Image.new(img, 70, 0, 20, 20),  -- top right
+    Image.new(img, 0, 20, 20, 50),  -- left
+    Image.new(img, 70, 20, 20, 50), -- right
+    Image.new(img, 0, 70, 20, 20),  -- bottom left
+    Image.new(img, 20, 70, 50, 20), -- bottom
+    Image.new(img, 70, 70, 20, 20), -- bottom right
   }
 
   self.text_helper = TextHelper.new(Game.font)
@@ -614,25 +614,25 @@ function Level:get_hole(i, j)
 end
 
 function Level:draw()
-  for i = 0, 3 do
-    for j = 0, 2 do
-      self.bg:draw(i * 200, j * 200)
+  for i = 0, BG_TILES_X do
+    for j = 0, BG_TILES_Y do
+      self.bg:draw(i * self.bg.width, j * self.bg.height)
     end
   end
 
-  self.borders[1]:draw(self.margin_x - 12, self.margin_y - 12)
-  self.borders[3]:draw(SCREEN_WIDTH - self.margin_x, self.margin_y - 12)
-  self.borders[6]:draw(self.margin_x - 12, SCREEN_HEIGHT - self.margin_y)
+  self.borders[1]:draw(self.margin_x - 20, self.margin_y - 20)
+  self.borders[3]:draw(SCREEN_WIDTH - self.margin_x, self.margin_y - 20)
+  self.borders[6]:draw(self.margin_x - 20, SCREEN_HEIGHT - self.margin_y)
   self.borders[8]:draw(SCREEN_WIDTH - self.margin_x, SCREEN_HEIGHT - self.margin_y)
   for i = 1, self.width do
     local x = self.margin_x + (i - 1) * TILE_SIZE
-    self.borders[2]:draw(x, self.margin_y - 12)
+    self.borders[2]:draw(x, self.margin_y - 20)
     self.borders[7]:draw(x, SCREEN_HEIGHT - self.margin_y)
     for j = 1, self.height do
       local y = self.margin_y + (j - 1) * TILE_SIZE
 
       if i == 1 then
-        self.borders[4]:draw(self.margin_x - 12, y)
+        self.borders[4]:draw(self.margin_x - 20, y)
         self.borders[5]:draw(SCREEN_WIDTH - self.margin_x, y)
       end
 
