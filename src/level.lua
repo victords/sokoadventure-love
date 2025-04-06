@@ -415,7 +415,7 @@ function Level:obstacle_at(i, j, check_hole)
 end
 
 function Level:reposition_enemies(step)
-  for e, ind in ipairs(self.enemies) do
+  for ind, e in ipairs(self.enemies) do
     local i = math.floor((e.x - self.margin_x) / TILE_SIZE) + 1
     local j = math.floor((e.y - self.margin_y) / TILE_SIZE) + 1
     e.x = step.enemies[ind][1]
@@ -575,12 +575,16 @@ function Level:update()
     end
   end
 
+  local objects_to_update = {}
   for _, col in ipairs(self.objects) do
     for _, cell in ipairs(col) do
       for _, obj in ipairs(cell) do
-        if obj.update then obj:update(self) end
+        if obj.update then table.insert(objects_to_update, obj) end
       end
     end
+  end
+  for _, obj in ipairs(objects_to_update) do
+    obj:update(self)
   end
   self.man:update()
 
