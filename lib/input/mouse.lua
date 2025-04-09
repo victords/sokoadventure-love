@@ -12,8 +12,8 @@ end
 
 function Mouse.update()
   Mouse.click_captured = false
-  Mouse.x = love.mouse.getX()
-  Mouse.y = love.mouse.getY()
+  Mouse.x = math.floor((love.mouse.getX() - Window.offset_x) / Window.scale)
+  Mouse.y = math.floor((love.mouse.getY() - Window.offset_y) / Window.scale)
   for i, v in ipairs(button_number_to_name) do
     Mouse.prev_down[v] = Mouse.cur_down[v]
     Mouse.cur_down[v] = love.mouse.isDown(i)

@@ -115,6 +115,7 @@ require("lib.forms.toggle_button")
 require("lib.geometry.map")
 require("lib.geometry.rectangle")
 require("lib.geometry.vector")
+require("lib.geometry.window")
 
 require("lib.graphics.image")
 require("lib.graphics.sprite")

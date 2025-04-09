@@ -9,7 +9,9 @@ function love.update(dt)
 end
 
 function love.draw()
-  Game.draw()
+  Window.draw(function ()
+    Game.draw()
+  end)
 end
 
 function love.joystickadded()

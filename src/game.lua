@@ -46,7 +46,7 @@ function Game.load()
 
   Localization.init(LANGUAGES[Game.language])
   KB.held_delay = 10
-  love.window.setFullscreen(Game.full_screen)
+  Window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT, Game.full_screen, SCREEN_WIDTH, SCREEN_HEIGHT)
 end
 
 function Game.play_song(id)
@@ -132,7 +132,7 @@ end
 
 function Game.toggle_full_screen()
   Game.full_screen = not Game.full_screen
-  love.window.setFullscreen(Game.full_screen)
+  Window.toggle_fullscreen()
 end
 
 function Game.next_language()
