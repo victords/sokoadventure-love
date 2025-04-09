@@ -20,7 +20,42 @@
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
-     id="defs2" />
+     id="defs2">
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter972"
+       x="-0.11666673"
+       y="-0.11666654"
+       width="1.2333335"
+       height="1.2333331">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.3968753"
+         id="feGaussianBlur974" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter996"
+       x="-0.17049997"
+       y="-0.17050008"
+       width="1.3409999"
+       height="1.3410002">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.38099983"
+         id="feGaussianBlur998" />
+    </filter>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1002">
+      <path
+         id="path1004"
+         style="opacity:1;fill:#7a4400;fill-opacity:1;stroke:#633700;stroke-width:0.529169;stroke-linecap:round;stroke-linejoin:bevel;stroke-opacity:1"
+         d="m -10.847919,265.51462 h 8.4666658 v 8.46666 h -8.4666658 z" />
+    </clipPath>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -29,8 +64,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="16.5"
-     inkscape:cy="26"
+     inkscape:cx="9.5"
+     inkscape:cy="30"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -80,5 +115,17 @@
        d="m 10.847917,273.98124 v -1.85209 L 4.2333338,265.51457 H 2.38125 v 1.85208 l 6.6145837,6.61459 z"
        id="path4585"
        sodipodi:nodetypes="ccccccc" />
+    <path
+       id="path952"
+       style="opacity:1;fill:none;stroke:#633700;stroke-width:1.05833332;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1;filter:url(#filter972)"
+       transform="scale(-1,1)"
+       d="m -12.964583,263.3979 12.69999941,2e-5 v 12.7 H -12.964583 Z"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       id="path976"
+       style="opacity:1;fill:none;stroke:#633700;stroke-width:1.05833332;stroke-linecap:round;stroke-linejoin:bevel;stroke-opacity:1;fill-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;filter:url(#filter996)"
+       transform="scale(-1,1)"
+       d="m -10.847919,265.51462 h 8.4666658 v 8.46666 h -8.4666658 z"
+       clip-path="url(#clipPath1002)" />
   </g>
 </svg>

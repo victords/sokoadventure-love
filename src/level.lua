@@ -650,6 +650,19 @@ function Level:draw()
       elseif tile == "l" then overlay = self.lock
       end
       if overlay then overlay:draw(x, y) end
+
+      if i > 1 and j > 1 then
+        local tl = self.tiles[i - 1][j - 1] == "h" or self.tiles[i - 1][j - 1] == "H"
+        local tr = self.tiles[i][j - 1] == "h" or self.tiles[i][j - 1] == "H"
+        local bl = self.tiles[i - 1][j] == "h" or self.tiles[i - 1][j] == "H"
+        local br = tile == "h" or tile == "H"
+        if tl and tr and bl and br then
+          love.graphics.setColor(0.266667, 0.266667, 0.266667)
+          love.graphics.rectangle("fill", x - 0.5 * TILE_SIZE, y - 0.5 * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+          love.graphics.setColor(1, 1, 1)
+        end
+      end
+
       if tile == "H" then self.set_box:draw(x, y) end
     end
   end
