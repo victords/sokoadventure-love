@@ -264,9 +264,7 @@ function TextField:draw(color)
       rect_color[2] = rect_color[2] * 0.6
       rect_color[3] = rect_color[3] * 0.6
     end
-    love.graphics.setColor(rect_color)
-    love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-    love.graphics.setColor(1, 1, 1)
+    Window.draw_rectangle(self.x, self.y, self.w, self.h, rect_color)
   end
 
   if text ~= '' then
@@ -277,9 +275,7 @@ function TextField:draw(color)
   if self.anchor1 and self.anchor2 then
     local min = self.anchor1 < self.anchor2 and self.anchor1 or self.anchor2
     local max = min == self.anchor1 and self.anchor2 or self.anchor1
-    love.graphics.setColor(self.selection_color)
-    love.graphics.rectangle("fill", self.nodes[min], self.text_y, self.nodes[max] - self.nodes[min], self.font.height * self.scale)
-    love.graphics.setColor(1, 1, 1)
+    Window.draw_rectangle(self.nodes[min], self.text_y, self.nodes[max] - self.nodes[min], self.font.height * self.scale, self.selection_color)
   end
 
   if self.cursor_visible then
@@ -287,9 +283,7 @@ function TextField:draw(color)
     if self.cursor_img then
       self.cursor_img:draw(cursor_x + self.cursor_img_gap.x, self.text_y + self.cursor_img_gap.y, self.scale, self.scale)
     else
-      love.graphics.setColor(self.cursor_color)
-      love.graphics.rectangle("fill", cursor_x, self.text_y, 1, self.font.height * self.scale)
-      love.graphics.setColor(1, 1, 1)
+      Window.draw_rectangle(cursor_x, self.text_y, 1, self.font.height * self.scale, self.cursor_color)
     end
   end
 end

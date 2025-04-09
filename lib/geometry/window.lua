@@ -45,6 +45,14 @@ function Window.toggle_fullscreen()
   Window.setSize(Window.window_width, Window.window_height, not currently_fullscreen, Window.reference_width, Window.reference_height)
 end
 
+function Window.draw_rectangle(x, y, w, h, color, mode)
+  color = color or {1, 1, 1}
+  mode = mode or "fill"
+  love.graphics.setColor(color)
+  love.graphics.rectangle(mode, x, y, w, h)
+  love.graphics.setColor(1, 1, 1)
+end
+
 function Window.draw(draw_code)
   if Window.canvas then
     love.graphics.setCanvas(Window.canvas)

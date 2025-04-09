@@ -657,9 +657,7 @@ function Level:draw()
         local bl = self.tiles[i - 1][j] == "h" or self.tiles[i - 1][j] == "H"
         local br = tile == "h" or tile == "H"
         if tl and tr and bl and br then
-          love.graphics.setColor(0.266667, 0.266667, 0.266667)
-          love.graphics.rectangle("fill", x - 0.5 * TILE_SIZE, y - 0.5 * TILE_SIZE, TILE_SIZE, TILE_SIZE)
-          love.graphics.setColor(1, 1, 1)
+          Window.draw_rectangle(x - 0.5 * TILE_SIZE, y - 0.5 * TILE_SIZE, TILE_SIZE, TILE_SIZE, {0.266667, 0.266667, 0.266667})
         end
       end
 
@@ -693,9 +691,7 @@ function Level:draw()
   end
 
   if self.confirmation then
-    love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-    love.graphics.setColor(1, 1, 1)
+    Window.draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, {0, 0, 0, 0.5})
     self.panel:draw((SCREEN_WIDTH - self.panel.width) / 2, (SCREEN_HEIGHT - self.panel.height) / 2)
     if self.confirmation == "next_level" then
       self.text_helper_big:write_line(Localization.text("won"), 400, 240, "center", {0, 0, 0})

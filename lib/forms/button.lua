@@ -100,9 +100,7 @@ function Button:draw(color)
       rect_color[2] = rect_color[2] * 0.6
       rect_color[3] = rect_color[3] * 0.6
     end
-    love.graphics.setColor(rect_color)
-    love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-    love.graphics.setColor(1, 1, 1)
+    Window.draw_rectangle(self.x, self.y, self.w, self.h, rect_color)
   end
 
   if self.font == nil or self.text == nil or self.text == "" then return end
