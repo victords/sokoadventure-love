@@ -11,8 +11,8 @@ local EFFECT_DURATION = 150
 MenuButton = setmetatable({}, Button)
 MenuButton.__index = MenuButton
 
-function MenuButton.new(x, y, text_id, sh_key, sh_key_text, action)
-  local self = Button.new(x, y, {font = Game.font, text = "", img_path = "button2"}, function(_)
+function MenuButton.new(x, y, text_id, sh_key, sh_key_text, action, center)
+  local self = Button.new(x, y, {font = Game.font, text = "", img_path = "button2", anchor = center and "center" or "top_right"}, function(_)
     action()
     Game.play_sound("click")
   end)
@@ -112,28 +112,28 @@ function Level.new(number)
   self.text_helper = TextHelper.new(Game.font)
   self.text_helper_big = TextHelper.new(Game.big_font)
 
-  self.pause_button = MenuButton.new(690, 10, "pause", "pause", "_", function(_)
+  self.pause_button = MenuButton.new(20, 20, "pause", "pause", "_", function(_)
     self.paused = not self.paused
     self.pause_button:change_text(self.paused and "resume" or "pause")
     self.undo_button.enabled = not self.paused
   end)
-  self.undo_button = MenuButton.new(690, 55, "undo", "undo", "Z", function(_)
+  self.undo_button = MenuButton.new(20, 100, "undo", "undo", "Z", function(_)
     self:undo()
   end)
   self.buttons = {
     self.pause_button,
     self.undo_button,
-    MenuButton.new(690, 100, "restart", "restart", "R", function(_)
+    MenuButton.new(20, 180, "restart", "restart", "R", function(_)
       self.confirmation = "restart"
     end),
-    MenuButton.new(690, 145, "quit", "quit", "Esc", function(_)
+    MenuButton.new(20, 260, "quit", "quit", "Esc", function(_)
       self.confirmation = "quit"
     end)
   }
 
   self.panel = Res.img("panel")
   self.confirm_buttons = {
-    MenuButton.new(295, 340, "yes", "confirm", "Q", function(_)
+    MenuButton.new(-125, 100, "yes", "confirm", "Q", function(_)
       if self.confirmation == "restart" then
         Game.register_attempt()
         self:start()
@@ -142,8 +142,8 @@ function Level.new(number)
       elseif self.confirmation == "next_level" then
         Game.next_level()
       end
-    end),
-    MenuButton.new(405, 340, "no", "cancel", "W", function(_)
+    end, true),
+    MenuButton.new(125, 100, "no", "cancel", "W", function(_)
       if self.confirmation == "next_level" then
         self.replay = true
         self.replay_step = 1
@@ -152,18 +152,18 @@ function Level.new(number)
       else
         self.confirmation = nil
       end
-    end)
+    end, true)
   }
 
   self.replay_interval = 15
   self.replay_buttons = {
-    MenuButton.new(690, 10, "finish", "quit", "Esc", function(_)
+    MenuButton.new(20, 20, "finish", "quit", "Esc", function(_)
       self.confirmation = "next_level"
     end),
-    Button.new(690, 60, {img_path = "less"}, function(_)
+    Button.new(230, 100, {img_path = "less", anchor = "top_right"}, function(_)
       self:reduce_replay_speed()
     end),
-    Button.new(771, 60, {img_path = "more"}, function(_)
+    Button.new(20, 100, {img_path = "more", anchor = "top_right"}, function(_)
       self:increase_replay_speed()
     end)
   }
@@ -685,19 +685,21 @@ function Level:draw()
   if self.replay then
     for _, b in ipairs(self.replay_buttons) do b:draw() end
     local text = self.replay_interval == 7 and "fast" or (self.replay_interval == 15 and "normal" or "slow")
-    self.text_helper:write_line(Localization.text(text), 740, 65, "center", {0, 0, 0})
+    self.text_helper:write_line(Localization.text(text), SCREEN_WIDTH - 145, 112, "center", {0, 0, 0})
   else
     for _, b in ipairs(self.buttons) do b:draw() end
   end
 
   if self.confirmation then
     Window.draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, {0, 0, 0, 0.5})
-    self.panel:draw((SCREEN_WIDTH - self.panel.width) / 2, (SCREEN_HEIGHT - self.panel.height) / 2)
+    local panel_x = (SCREEN_WIDTH - self.panel.width) / 2
+    local panel_y = (SCREEN_HEIGHT - self.panel.height) / 2
+    self.panel:draw(panel_x, panel_y)
     if self.confirmation == "next_level" then
-      self.text_helper_big:write_line(Localization.text("won"), 400, 240, "center", {0, 0, 0})
+      self.text_helper_big:write_line(Localization.text("won"), SCREEN_WIDTH / 2, panel_y + 70, "center", {0, 0, 0})
     else
-      self.text_helper_big:write_line(Localization.text(self.confirmation), 400, 210, "center", {0, 0, 0})
-      self.text_helper:write_line(Localization.text("are_you_sure"), 400, 275, "center", {0, 0, 0})
+      self.text_helper_big:write_line(Localization.text(self.confirmation), SCREEN_WIDTH / 2, panel_y + 70, "center", {0, 0, 0})
+      self.text_helper:write_line(Localization.text("are_you_sure"), SCREEN_WIDTH / 2, panel_y + 120, "center", {0, 0, 0})
     end
     for _, b in ipairs(self.confirm_buttons) do b:draw() end
   elseif self.effect then

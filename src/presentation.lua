@@ -12,7 +12,7 @@ end
 
 function Presentation:update()
   self.timer = self.timer + 1
-  if Game.key_press("confirm") or Game.key_press("pause") or Game.key_press("quit") or Mouse.pressed("left") or self.timer >= 420 then
+  if Game.key_press("confirm") or Game.key_press("quit") or Mouse.pressed("left") or self.timer >= 420 then
     Game.open_menu()
   end
 end

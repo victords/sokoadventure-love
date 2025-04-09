@@ -40,8 +40,8 @@ function Game.load()
     Game.save_config()
   end
 
-  Game.font = Res.font("font", 20)
-  Game.big_font = Res.font("font", 32)
+  Game.font = Res.font("font", 28)
+  Game.big_font = Res.font("font", 40)
   Game.controller = Presentation.new()
 
   Localization.init(LANGUAGES[Game.language])
@@ -70,7 +70,7 @@ function Game.key_press(id, held)
   elseif id == "left" then
     keys = {"left", "gp1_left"}
   elseif id == "confirm" then
-    keys = {"q", "gp1_a"}
+    keys = {"q", "space", "return", "gp1_a"}
   elseif id == "cancel" then
     keys = {"w", "gp1_b"}
   elseif id == "undo" then
@@ -82,8 +82,10 @@ function Game.key_press(id, held)
   elseif id == "pause" then
     keys = {"space", "gp1_start"}
   end
-  return KB.pressed(keys[1]) or KB.pressed(keys[2]) or
-    held and (KB.held(keys[1]) or KB.held(keys[2]))
+
+  for _, key in ipairs(keys) do
+    if KB.pressed(key) or held and KB.held(key) then return true end
+  end
 end
 
 function Game.toggle_gamepad(connected)

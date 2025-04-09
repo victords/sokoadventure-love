@@ -81,8 +81,8 @@ Utils = {
     return t
   end,
   check_anchor = function(anchor, x, y, w, h, area_w, area_h)
-    area_w = area_w or love.graphics.getWidth()
-    area_h = area_h or love.graphics.getHeight()
+    area_w = area_w or Window.reference_width
+    area_h = area_h or Window.reference_height
     local anchor_alias = nil
     if anchor then
       if anchor == "top" or anchor == "top_center" or anchor == "north" then anchor_alias = "top_center"; x = x + (area_w - w) / 2
