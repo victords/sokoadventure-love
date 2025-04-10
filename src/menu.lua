@@ -78,7 +78,7 @@ function Menu.new()
   self.text_helper = TextHelper.new(Game.font)
 
   local back_btn = MainButton.new(160, "back", "back", function(_)
-    Menu.set_state(self, "main")
+    self:set_state("main")
   end)
 
   local level_btns = {}
@@ -90,16 +90,16 @@ function Menu.new()
   self.btns = {
     main = {
       MainButton.new(560, "play", "play", function(_)
-        Menu.set_state(self, "play")
+        self:set_state("play")
       end),
       MainButton.new(460, "instructions", "help", function(_)
-        Menu.set_state(self, "instructions")
+        self:set_state("instructions")
       end),
       MainButton.new(360, "high_scores", "trophy", function(_)
-        Menu.set_state(self, "high_scores")
+        self:set_state("high_scores")
       end),
       MainButton.new(260, "options", "options", function(_)
-        Menu.set_state(self, "options")
+        self:set_state("options")
       end),
       MainButton.new(160, "exit", "exit", function(_)
         love.event.quit()
@@ -114,7 +114,7 @@ function Menu.new()
       end),
       OptionButton.new(200, -35, "change", function(_)
         Game.next_language()
-        Menu.update_button_texts(self)
+        self:update_button_texts()
       end),
       OptionButton.new(175, 45, "less", function(_)
         Game.change_music_volume(-1)
@@ -130,7 +130,7 @@ function Menu.new()
       end),
       MainButton.new(160, "back", "back", function(_)
         Game.save_config()
-        Menu.set_state(self, "main")
+        self:set_state("main")
       end)
     }
   }
@@ -149,7 +149,7 @@ function Menu:set_state(state)
 end
 
 function Menu:update_button_texts()
-  for _, list in ipairs(self.btns) do
+  for _, list in pairs(self.btns) do
     for _, b in ipairs(list) do
       if b.update_text then b:update_text() end
     end
