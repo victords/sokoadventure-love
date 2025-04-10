@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=SokoAdventure
+Comment=A Sokoban-inspired puzzle game
+MimeType=application/x-love-game;
+Exec=sokoadventure %f
+Type=Application
+Categories=Game;
+Terminal=false
+Icon=sokoadventure
+NoDisplay=true
