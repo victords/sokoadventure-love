@@ -35,7 +35,7 @@ end
 
 function MenuButton:toggle_gamepad(connected)
   if connected then
-    self.margin_x = -15
+    self.margin_x = -22
     self.text = Localization.text(self.text_id)
     local gp_button_img
     if self.sh_key == "confirm" then gp_button_img = "gpA"
@@ -64,7 +64,7 @@ end
 function MenuButton:draw()
   Button.draw(self)
   if self.gp_button then
-    self.gp_button:draw(self.text_x + Game.font:text_width(self.text) / 2 + 10, self.text_y - 10)
+    self.gp_button:draw(math.floor(self.text_x + Game.font:text_width(self.text) / 2) + 10, self.text_y - 17)
   end
 end
 
@@ -133,7 +133,7 @@ function Level.new(number)
 
   self.panel = Res.img("panel")
   self.confirm_buttons = {
-    MenuButton.new(-125, 100, "yes", "confirm", "Q", function(_)
+    MenuButton.new(-130, 105, "yes", "confirm", "Q", function(_)
       if self.confirmation == "restart" then
         Game.register_attempt()
         self:start()
@@ -143,7 +143,7 @@ function Level.new(number)
         Game.next_level()
       end
     end, true),
-    MenuButton.new(125, 100, "no", "cancel", "W", function(_)
+    MenuButton.new(130, 105, "no", "cancel", "W", function(_)
       if self.confirmation == "next_level" then
         self.replay = true
         self.replay_step = 1

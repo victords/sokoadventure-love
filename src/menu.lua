@@ -109,23 +109,23 @@ function Menu.new()
     instructions = {back_btn},
     high_scores = {back_btn},
     options = {
-      OptionButton.new(180, -115, "change", function(_)
+      OptionButton.new(200, -115, "change", function(_)
         Game.toggle_full_screen()
       end),
-      OptionButton.new(180, -35, "change", function(_)
+      OptionButton.new(200, -35, "change", function(_)
         Game.next_language()
         Menu.update_button_texts(self)
       end),
-      OptionButton.new(156, 45, "less", function(_)
+      OptionButton.new(175, 45, "less", function(_)
         Game.change_music_volume(-1)
       end),
-      OptionButton.new(206, 45, "more", function(_)
+      OptionButton.new(225, 45, "more", function(_)
         Game.change_music_volume(1)
       end),
-      OptionButton.new(156, 125, "less", function(_)
+      OptionButton.new(175, 125, "less", function(_)
         Game.change_sound_volume(-1)
       end),
-      OptionButton.new(206, 125, "more", function(_)
+      OptionButton.new(225, 125, "more", function(_)
         Game.change_sound_volume(1)
       end),
       MainButton.new(160, "back", "back", function(_)
@@ -187,15 +187,15 @@ function Menu:draw()
     self.text_helper:write_breaking(Localization.text("help_text"), panel_x + 30, panel_y + 30, self.panel.width - 60, "left", {0, 0, 0})
   elseif self.state == "high_scores" then
     Game.font:draw_text(Localization.text("from_level"), panel_x + 30, panel_y + 30, {0, 0, 0})
-    Game.font:draw_text(Localization.text("to_level"), panel_x + 180, panel_y + 30, {0, 0, 0})
-    Game.font:draw_text(Localization.text("in_tries"), panel_x + 330, panel_y + 30, {0, 0, 0})
+    Game.font:draw_text(Localization.text("to_level"), panel_x + 200, panel_y + 30, {0, 0, 0})
+    Game.font:draw_text(Localization.text("in_tries"), panel_x + 370, panel_y + 30, {0, 0, 0})
     for i = 1, 5 do
       for j = 1, 3 do
         local text = Game.scores[i] and tostring(Game.scores[i][j]) or "-"
         if j == 2 and Game.scores[i] and Game.scores[i][j] == LEVEL_COUNT + 1 then
           text = Localization.text("end")
         end
-        Game.font:draw_text(text, panel_x + 30 + (j - 1) * 150, panel_y + 65 + (i - 1) * 40, {0, 0, 0})
+        Game.font:draw_text(text, panel_x + 30 + (j - 1) * 170, panel_y + 65 + (i - 1) * 40, {0, 0, 0})
       end
     end
   elseif self.state == "options" then
