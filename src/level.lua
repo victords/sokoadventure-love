@@ -672,20 +672,20 @@ function Level:draw()
   end
   self.man:draw()
 
-  self.text_helper_big:write_line(Localization.text("level") .. " " .. self.number, 10, 10, "left", {1, 1, 1}, "shadow")
-  self.key_imgs.r:draw(10, 50, 0.5, 0.5)
-  self.text_helper:write_line(self.key_count.r, 36, 50, "left", {1, 0, 0}, "shadow")
-  self.key_imgs.b:draw(10, 70, 0.5, 0.5)
-  self.text_helper:write_line(self.key_count.b, 36, 70, "left", {0, 0, 1}, "shadow")
-  self.key_imgs.y:draw(10, 90, 0.5, 0.5)
-  self.text_helper:write_line(self.key_count.y, 36, 90, "left", {0.75, 0.75, 0}, "shadow")
-  self.key_imgs.g:draw(10, 110, 0.5, 0.5)
-  self.text_helper:write_line(self.key_count.g, 36, 110, "left", {0, 0.5, 0}, "shadow")
+  self.text_helper_big:write_line(Localization.text("level") .. " " .. self.number, 20, 20, "left", {1, 1, 1}, "shadow")
+  self.key_imgs.r:draw(20, 70, 0.6, 0.6)
+  self.text_helper:write_line(self.key_count.r, 60, 71, "left", {1, 0, 0}, "shadow")
+  self.key_imgs.b:draw(20, 110, 0.6, 0.6)
+  self.text_helper:write_line(self.key_count.b, 60, 111, "left", {0, 0, 1}, "shadow")
+  self.key_imgs.y:draw(20, 150, 0.6, 0.6)
+  self.text_helper:write_line(self.key_count.y, 60, 151, "left", {0.75, 0.75, 0}, "shadow")
+  self.key_imgs.g:draw(20, 190, 0.6, 0.6)
+  self.text_helper:write_line(self.key_count.g, 60, 191, "left", {0, 0.5, 0}, "shadow")
 
   if self.replay then
     for _, b in ipairs(self.replay_buttons) do b:draw() end
     local text = self.replay_interval == 7 and "fast" or (self.replay_interval == 15 and "normal" or "slow")
-    self.text_helper:write_line(Localization.text(text), SCREEN_WIDTH - 145, 112, "center", {0, 0, 0})
+    self.text_helper:write_line(Localization.text(text), SCREEN_WIDTH - 145, 115, "center", {0, 0, 0})
   else
     for _, b in ipairs(self.buttons) do b:draw() end
   end
