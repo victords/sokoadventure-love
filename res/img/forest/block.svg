@@ -26,11 +26,11 @@
        inkscape:collect="always"
        id="linearGradient20840">
       <stop
-         style="stop-color:#8ed900;stop-opacity:1"
+         style="stop-color:#62b200;stop-opacity:1"
          offset="0"
          id="stop20836" />
       <stop
-         style="stop-color:#679d00;stop-opacity:1"
+         style="stop-color:#4e8e00;stop-opacity:1"
          offset="1"
          id="stop20838" />
     </linearGradient>
@@ -1083,8 +1083,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="12.5"
-     inkscape:cy="29"
+     inkscape:cx="26.5"
+     inkscape:cy="19"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1120,7 +1120,7 @@
        id="path19899" />
     <path
        id="path18736"
-       style="fill:url(#radialGradient20842);fill-opacity:1;stroke:#639300;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:url(#radialGradient20842);fill-opacity:1;stroke:#447c00;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 6.2633005,263.3979 a 1.9741149,1.7044471 0 0 0 -1.919583,1.31091 1.585998,1.5106598 0 0 0 -0.056199,-9.2e-4 1.585998,1.5106598 0 0 0 -1.5169025,1.07093 1.6999097,1.7710934 0 0 0 -1.4476992,1.7515 1.6999097,1.7710934 0 0 0 1.1783166,1.68464 1.5321804,1.7399223 0 0 0 -0.0051,0.13706 1.5321804,1.7399223 0 0 0 1.5322297,1.73965 1.5321804,1.7399223 0 0 0 0.8332282,-0.28076 1.4640241,1.6242856 0 0 0 1.3111501,0.90302 1.4640241,1.6242856 0 0 0 1.1369803,-0.60186 2.066487,1.3752622 0 0 0 0.9117207,0.14228 2.066487,1.3752622 0 0 0 1.9033276,-0.84041 2.1377936,1.6245461 0 0 0 1.770028,-1.59975 2.1377936,1.6245461 0 0 0 -0.372955,-0.91678 1.7508313,1.6032022 0 0 0 0.450054,-1.07234 1.7508313,1.6032022 0 0 0 -1.671565,-1.60163 1.399562,1.8125416 0 0 0 -1.3980019,-1.72733 1.399562,1.8125416 0 0 0 -1.0422319,0.60424 1.9741149,1.7044471 0 0 0 -1.5967886,-0.70241 z" />
   </g>
 </svg>
