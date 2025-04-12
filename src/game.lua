@@ -46,7 +46,7 @@ function Game.load()
 
   Localization.init(LANGUAGES[Game.language])
   KB.held_delay = 10
-  Window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT, Game.full_screen, SCREEN_WIDTH, SCREEN_HEIGHT)
+  Window.set_size(Game.full_screen)
 end
 
 function Game.play_song(id)
