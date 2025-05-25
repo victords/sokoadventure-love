@@ -660,8 +660,11 @@ function Level:draw()
           Window.draw_rectangle(x - 0.5 * TILE_SIZE, y - 0.5 * TILE_SIZE, TILE_SIZE, TILE_SIZE, {0.266667, 0.266667, 0.266667})
         end
       end
-
-      if tile == "H" then self.set_box:draw(x, y) end
+    end
+  end
+  for i = 1, self.width do
+    for j = 1, self.height do
+      if self.tiles[i][j] == "H" then self.set_box:draw(self.margin_x + (i - 1) * TILE_SIZE, self.margin_y + (j - 1) * TILE_SIZE) end
     end
   end
 
